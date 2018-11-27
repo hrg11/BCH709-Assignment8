@@ -1,0 +1,74 @@
+---
+title: "BCH 709 Assignment 8 - Heather Green"
+output: html_notebook
+---
+
+Here is my submission for Assignment #8. 
+
+```{r}
+### loading tidyverse
+library(tidyverse)
+```
+
+```{r}
+#install gapminder
+install.packages("gapminder")
+library(gapminder)
+data("gapminder")
+```
+
+```{r}
+#summary of data
+summary(gapminder)
+```
+
+```{r}
+#histogram of pop
+hist(log(gapminder$pop))
+```
+
+```{r}
+#scatterplot of life exp
+attach(gapminder)
+plot(lifeExp ~ log(gdpPercap))
+```
+
+```{r}
+#t-test lifeExp Ire v SAf
+TTdf <- gapminder %>%
+  select (country, lifeExp) %>%
+  filter(country == "South Africa" |
+           country == "Ireland")
+t.test(data = TTdf, lifeExp ~ country)
+```
+
+```{r}
+#continent plot lifeExp v gdp
+gapminder %>%
+  filter(gdpPercap < 50000) %>%
+  ggplot(aes(x=log(gdpPercap), y=lifeExp, col=continent, size=pop))+
+  geom_point(alpha=0.3)+
+  geom_smooth(method = lm)
+```
+
+```{r}
+#faceted plot lifeExp v gdp
+gapminder %>%
+  filter(gdpPercap < 50000) %>%
+  ggplot(aes(x=log(gdpPercap), y=lifeExp, col=year, size=pop))+
+  geom_point(alpha=0.3)+
+  geom_smooth(method = lm)+
+  facet_wrap(~continent)
+```
+
+```{r}
+#linear model test and summary
+lm(lifeExp ~ gdpPercap)
+summary(lm(lifeExp ~ gdpPercap))
+#linear model test and summary +pop
+lm(lifeExp ~ gdpPercap+pop)
+summary(lm(lifeExp ~ gdpPercap+pop))
+```
+
+Done and done.
+
